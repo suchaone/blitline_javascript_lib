@@ -10,7 +10,7 @@
 <script src='blitline_cors.js'></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-		var myAppId = "Jqeu4sS4vDTXDi3EXHjzBw"
+		var myAppId = "0Jd53lnnOvqLajNnbEn3Ecg" // whatever just don't steal it pls
 		if (myAppId == "YOUR_APP_ID") {
 			alert("You must change YOUR_APP_ID to your Blitline Application ID");
 			return;
@@ -21,8 +21,25 @@
 				alert("Job completed:" + JSON.stringify(results));
 			}
 		}
-		var json = { "application_id": myAppId, "src" : "http://www.google.com/logos/2011/yokoyama11-hp.jpg", "functions" : [ {"name": "blur", "params" : {"radius" : 0.0,  "sigma" : 2.0}, "save" : { "image_identifier" : "MY_CLIENT_ID" }} ]};
-
+	    var json = {
+	        "application_id": myAppId,
+	        "src": "https://twitter.com/VancityReynolds/profile_image?size=original",
+	        "functions": [
+	            {
+	                "name": "composite",
+	                "params": {
+	                    "src": "http://i.imgur.com/UHHpEda.png",
+	                    "scale_to_match": true,
+	                    "gravity": "CenterGravity"
+	                },
+	                "save": {
+	                    "extension": ".png",
+	                    "image_identifier": "MY_CLIENT_ID",
+	                    "png_quantize": true
+	                }
+	            }
+	        ]
+	    }
 		json = JSON.stringify(json);
 		blitline.submit(json, events);
 	});
