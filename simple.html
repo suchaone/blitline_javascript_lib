@@ -18,8 +18,9 @@
 		var blitline = new Blitline();
 		var events = {
 			completed : function(results, error) {
-				//alert("Job completed:" + JSON.stringify(results));
-				$(document).append("<img src='" + JSON[0].images[0].s3_url + "'>")
+				console.log(JSON.stringify(results));
+				console.log(JSON);
+				$("body").append("<img src='" + JSON[0].images[0].s3_url + "'>")
 			}
 		}
 	    var json = {
@@ -41,7 +42,7 @@
 	            }
 	        ]
 	    }
-	    button.click(function(){
+	    $("button").click(function(){
 		json = JSON.stringify(json);
 		blitline.submit(json, events);
 	    });
