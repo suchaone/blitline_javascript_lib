@@ -19,12 +19,14 @@
 		var events = {
 			completed : function(results, error) {
 				console.log(results);
-				$("body").append("<img src='" + results[0].images[0].s3_url + "'>")
+				$("body").append("<img src='" + results[0].images[0].s3_url + "'>");
+				$("button").removeAttr('disabled');
+				$("button").html("become good");
 			}
 		}
 	    var json = {
 	        "application_id": myAppId,
-	        "src": "https://twitter.com/"+ $("input name='username'").val() + "/profile_image?size=original",
+	        "src": "https://twitter.com/"+ $("input[name='username']").val() + "/profile_image?size=original",
 	        "functions": [
 	            {
 	                "name": "composite",
@@ -44,6 +46,8 @@
 	    $("button").click(function(){
 		json = JSON.stringify(json);
 		blitline.submit(json, events);
+		$(this).attr("disabled", "disabled");
+		$(this).html("...becoming good...");
 	    });
 	});
 </script>
