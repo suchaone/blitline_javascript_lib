@@ -18,9 +18,8 @@
 		var blitline = new Blitline();
 		var events = {
 			completed : function(results, error) {
-				console.log(JSON.stringify(results));
-				console.log(JSON);
-				$("body").append("<img src='" + JSON[0].images[0].s3_url + "'>")
+				console.log(results);
+				$("body").append("<img src='" + results[0].images[0].s3_url + "'>")
 			}
 		}
 	    var json = {
