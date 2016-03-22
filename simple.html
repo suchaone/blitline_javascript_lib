@@ -24,7 +24,7 @@
 		}
 	    var json = {
 	        "application_id": myAppId,
-	        "src": "https://twitter.com/VancityReynolds/profile_image?size=original",
+	        "src": "https://twitter.com/"+ $("input name='username'").val() + "/profile_image?size=original",
 	        "functions": [
 	            {
 	                "name": "composite",
@@ -41,10 +41,15 @@
 	            }
 	        ]
 	    }
+	    button.click(function(){
 		json = JSON.stringify(json);
 		blitline.submit(json, events);
+	    });
 	});
 </script>
 </head>
 <body>
+	<label>your username on twitter dot com:</label><input type="text" name="username"></input>
+	<br>
+	<button>become good</button>
 </body>
