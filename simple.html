@@ -1,51 +1,15 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
-<html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<meta http-equiv="Content-Script-Type" content="text/javascript">
-<title></title>
-<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>
-<script src='https://s3.amazonaws.com/web.blitline/underscore-min.js'></script>
-<script src='blitline_cors.js'></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		var myAppId = "0Jd53lnnOvqLajNnbEn3Ecg" // whatever just don't steal it pls
-		if (myAppId == "YOUR_APP_ID") {
-			alert("You must change YOUR_APP_ID to your Blitline Application ID");
-			return;
-		}
-		var blitline = new Blitline();
-		var events = {
-			completed : function(results, error) {
-				console.log(results);
-				$("body").append("<img src='" + results[0].images[0].s3_url + "'>");
-			}
-		}
-	    var json = {
-	        "application_id": myAppId,
-	        "src": "https://twitter.com/"+ window.location.hash.replace("#","") + "/profile_image?size=original",
-	        "functions": [
-	            {
-	                "name": "composite",
-	                "params": {
-	                    "src": "http://i.imgur.com/UHHpEda.png",
-	                    "scale_to_match": true,
-	                    "gravity": "CenterGravity"
-	                },
-	                "save": {
-	                    "extension": ".png",
-	                    "image_identifier": "MY_CLIENT_ID",
-	                    "png_quantize": true
-	                }
-	            }
-	        ]
-	    }
-	    json = JSON.stringify(json);
-	    blitline.submit(json, events);
-	});
-</script>
-</head>
-<body>
-  <h1>Please wait patiently as you beocme good...</h1>
-</body>
+<!DOCTYPE HTML>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="refresh" content="1; url=http://suchaone.github.io/ingroup">
+        <script type="text/javascript">
+            window.location.href = "http://suchaone.github.io/ingroup"
+        </script>
+        <title>Page Redirection</title>
+    </head>
+    <body>
+        <!-- Note: don't tell people to `click` the link, just tell them that it is a link. -->
+        If you are not redirected automatically, follow this <a href='http://suchaone.github.io/ingroup'>link to example</a>.
+    </body>
+</html>

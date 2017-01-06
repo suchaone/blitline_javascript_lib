@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title></title>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>
+<script src='https://s3.amazonaws.com/web.blitline/underscore-min.js'></script>
+<script src='blitline_cors.js'></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+    $("input").val(window.location.hash.replace("#",""));
+    $("button").click(function() {
+      $("h1").html("Please wait patiently while you become good...");
+		  var myAppId = "0Jd53lnnOvqLajNnbEn3Ecg" // whatever just don't steal it pls
+		  if (myAppId == "YOUR_APP_ID") {
+		  	alert("You must change YOUR_APP_ID to your Blitline Application ID");
+		  	return;
+		  }
+		  var blitline = new Blitline();
+		  var events = {
+		  	completed : function(results, error) {
+          $("h1").html("You've almost become good!<br>The last step is to download the image and set it as your twitter avatar");
+		  		$("body").append("<img src='" + results[0].images[0].s3_url + "'>");
+		  	}
+		  }
+	    var json = {
+	        "application_id": myAppId,
+	        "src": "https://twitter.com/"+ $("input").val() + "/profile_image?size=original",
+	        "functions": [
+	            {
+	                "name": "composite",
+	                "params": {
+	                    "src": "http://i.imgur.com/UHHpEda.png",
+	                    "scale_to_match": true,
+	                    "gravity": "CenterGravity"
+	                },
+	                "save": {
+	                    "extension": ".png",
+	                    "image_identifier": "MY_CLIENT_ID",
+	                    "png_quantize": true
+	                }
+	            }
+	        ]
+	    }
+	    json = JSON.stringify(json);
+	    blitline.submit(json, events);
+    });
+	});
+</script>
+<style>
+html {
+  font-family: sans-serif;
+}
+button, input {
+  font-size: 20px;
+}
+</style>
+</head>
+<body>
+  <h1>Ready to become good?</h1>
+  @<input type="text" placeholder="your twitter username"></input>
+  <button>become good</button>
+  <br><br>
+</body>
