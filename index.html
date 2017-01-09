@@ -10,6 +10,10 @@
 <script src='blitline_cors.js'></script>
 <script type="text/javascript">
 	$(document).ready(function() {
+    var GOOD_IMAGE = "http://i.imgur.com/UHHpEda.png";
+    var BAD_IMAGE  = "http://suchaone.github.io/ingroup/outgroup.png";
+    var overlay_image = GOOD_IMAGE;
+
     $("input").val(window.location.hash.replace("#",""));
     $("button").click(function() {
       $("h1").html("Please wait patiently while you become good...");
@@ -32,7 +36,7 @@
 	            {
 	                "name": "composite",
 	                "params": {
-	                    "src": "http://i.imgur.com/UHHpEda.png",
+	                    "src": overlay_image,
 	                    "scale_to_match": true,
 	                    "gravity": "CenterGravity"
 	                },
@@ -47,6 +51,16 @@
 	    json = JSON.stringify(json);
 	    blitline.submit(json, events);
     });
+
+    $(".bad input").click(function() {
+      if ($(this).is(':checked')) {
+        $("button").html("become bad");
+        image = BAD_IMAGE;
+      } else {
+        $("button").html("become good");
+        image = GOOD_IMAGE;
+      }
+    });
 	});
 </script>
 <style>
@@ -56,11 +70,16 @@ html {
 button, input {
   font-size: 20px;
 }
+.bad {
+  position: absolute;
+  bottom: 10px;
+}
 </style>
 </head>
 <body>
   <h1>Ready to become good?</h1>
   @<input type="text" placeholder="your twitter username"></input>
   <button>become good</button>
+  <div class="bad"><small><input type="checkbox">I would like to become bad instead (this is the incorrect option)</small></div>
   <br><br>
 </body>
