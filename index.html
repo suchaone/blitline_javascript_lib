@@ -5,63 +5,61 @@
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <title></title>
-<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>
-<script src='https://s3.amazonaws.com/web.blitline/underscore-min.js'></script>
-<script src='blitline_cors.js'></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-    var GOOD_IMAGE = "http://i.imgur.com/UHHpEda.png";
-    var BAD_IMAGE  = "http://suchaone.github.io/ingroup/outgroup.png";
-    var overlay_image = GOOD_IMAGE;
+<script>
+var cors = 'https://cors-anywhere.herokuapp.com/';
+var goodUrl = 'http://i.imgur.com/UHHpEda.png';
+var badUrl = 'http://suchaone.github.io/ingroup/outgroup.png';
 
-    $("input").val(window.location.hash.replace("#",""));
-    $("button").click(function() {
-      $("h1").html("Please wait patiently while you become good...");
-		  var myAppId = "0Jd53lnnOvqLajNnbEn3Ecg" // whatever just don't steal it pls
-		  if (myAppId == "YOUR_APP_ID") {
-		  	alert("You must change YOUR_APP_ID to your Blitline Application ID");
-		  	return;
-		  }
-		  var blitline = new Blitline();
-		  var events = {
-		  	completed : function(results, error) {
-          $("h1").html("You've almost become good!<br>The last step is to download the image and set it as your twitter avatar");
-		  		$("body").append("<img src='" + results[0].images[0].s3_url + "'>");
-		  	}
-		  }
-	    var json = {
-	        "application_id": myAppId,
-	        "src": "https://twitter.com/"+ $("input").val() + "/profile_image?size=original",
-	        "functions": [
-	            {
-	                "name": "composite",
-	                "params": {
-	                    "src": overlay_image,
-	                    "scale_to_match": true,
-	                    "gravity": "CenterGravity"
-	                },
-	                "save": {
-	                    "extension": ".png",
-	                    "image_identifier": "MY_CLIENT_ID",
-	                    "png_quantize": true
-	                }
-	            }
-	        ]
-	    }
-	    json = JSON.stringify(json);
-	    blitline.submit(json, events);
+function getImage(url, callback) {
+  var r = new XMLHttpRequest;
+  r.addEventListener('load', function() {
+    var blob = r.response;
+    if (blob.type === 'text/xml') {
+      alert('Bad response');
+      return;
+    }
+    var img = new Image;
+    img.addEventListener('load',function() {
+      callback(img);
     });
+    img.src = URL.createObjectURL(blob);
+  });
+  r.addEventListener('error', function(e) {
+    alert('Error: ' + e);
+  });
+  r.open('GET', url, true);
+  r.send();
+  r.responseType = 'blob';
+}
 
-    $(".bad input").click(function() {
-      if ($(this).is(':checked')) {
-        $("button").html("become bad");
-        overlay_image = BAD_IMAGE;
-      } else {
-        $("button").html("become good");
-        overlay_image = GOOD_IMAGE;
-      }
+addEventListener('load', function() {
+  var canvas = document.querySelector('canvas');
+  var h1 = document.querySelector('h1');
+  var check = document.querySelector('#badCheck');
+  var input = document.querySelector('#username');
+  var imageEle;
+  document.querySelector('button').addEventListener('click', function() {
+    h1.innerHTML = 'Please wait patiently while you become good...';
+    getImage(cors + (check.checked ? badUrl : goodUrl), function(overlayImg) {
+      getImage(cors + 'https://twitter.com/' + input.value + '/profile_image?size=original', function(profImg) {
+        h1.innerHTML = 'You\'ve almost become good!<br>The last step is to download the image and set it as your twitter avatar';
+        canvas.width = profImg.width;
+        canvas.height = profImg.height;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(profImg, 0, 0);
+        ctx.drawImage(overlayImg, 0, 0, canvas.width, canvas.height);
+
+        if (imageEle) {
+          imageEle.parentNode.removeChild(imageEle);
+        }
+
+        imageEle = document.createElement('img');
+        imageEle.src = canvas.toDataURL();
+        document.body.appendChild(imageEle);
+      });
     });
-	});
+  });
+});
 </script>
 <style>
 html {
@@ -74,12 +72,18 @@ button, input {
   position: absolute;
   bottom: 10px;
 }
+canvas {
+  display: none;
+}
 </style>
 </head>
 <body>
   <h1>Ready to become good?</h1>
-  @<input type="text" placeholder="your twitter username"></input>
+  @<input type="text" placeholder="your twitter username" id="username"></input>
   <button>become good</button>
-  <div class="bad"><small><input type="checkbox">I would like to become bad instead (this is the incorrect option)</small></div>
+
+  <canvas></canvas>
+
+  <div class="bad"><small><input type="checkbox" id="badCheck">I would like to become bad instead (this is the incorrect option)</small></div>
   <br><br>
 </body>
