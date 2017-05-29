@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
    "http://www.w3.org/TR/html4/strict.dtd">
 <html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta charset="UTF-8">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <title></title>
@@ -65,6 +65,11 @@ addEventListener('load', function() {
 html {
   font-family: sans-serif;
 }
+
+a {
+  text-decoration: none;
+}
+
 button, input {
   font-size: 20px;
 }
@@ -75,15 +80,57 @@ button, input {
 canvas {
   display: none;
 }
+#header {
+  text-align: center;
+  font-size: 1.4em;
+  background: #333;
+}
+
+#header ul {
+  margin: 0;
+}
+
+#header li {
+  display: inline-block;
+}
+
+#header a {
+  color: white;                                                                 
+  padding: 1em;
+  display: block;
+}
+
+#header a:hover {
+  background: rgba(255,255,255,.1);
+  text-decoration: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#content {
+  padding: 40px; 
+}
+
 </style>
 </head>
 <body>
-  <h1>Ready to become good?</h1>
-  @<input type="text" placeholder="your twitter username" id="username"></input>
-  <button>become good</button>
-
-  <canvas></canvas>
-
-  <div class="bad"><small><input type="checkbox" id="badCheck">I would like to become bad instead (this is the incorrect option)</small></div>
-  <br><br>
+  <div id="header">
+    <ul>
+      <li><a href="http://suchaone.github.io/wojakgen">🆕 wojak generator</a>  
+      <li><a href="http://suchaone.github.io/ingroup">ingroup badge</a>
+      <li><a href="http://www.twitter.com/suchaone">@suchaone</a>
+      <li><a href="http://suchaone.github.io">home</a>
+    </ul>
+  </div>
+  <div id="content">
+    <h1>Ready to become good?</h1>
+    @<input type="text" placeholder="your twitter username" id="username"></input>
+    <button>become good</button>
+    <canvas></canvas>
+    <div class="bad"><small><input type="checkbox" id="badCheck">I would like to become bad instead (this is the incorrect option)</small></div>
+    <br><br>
+  </div>
 </body>
