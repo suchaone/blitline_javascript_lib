@@ -9,6 +9,7 @@
 var cors = 'https://cors-anywhere.herokuapp.com/';
 var goodUrl = 'http://suchaone.github.io/ingroup/ingroup.png';
 var badUrl = 'http://suchaone.github.io/ingroup/outgroup.png';
+var okUrl = 'http://suchaone.github.io/ingroup/in-n-out.png';
 
 function getImage(url, callback) {
   var r = new XMLHttpRequest;
@@ -40,7 +41,13 @@ addEventListener('load', function() {
   var imageEle;
   document.querySelector('button').addEventListener('click', function() {
     h1.innerHTML = 'Please wait patiently while you become good...';
-    getImage(cors + (check.checked ? badUrl : goodUrl), function(overlayImg) {
+    if (document.getElementById('goodCheck').checked)
+      var url = goodUrl;
+    else if (document.getElementById('badCheck').checked)
+      var url = badUrl;
+    else
+      var url = okUrl;
+    getImage(cors + url, function(overlayImg) {
       getImage(cors + 'https://twitter.com/' + input.value + '/profile_image?size=original', function(profImg) {
         h1.innerHTML = 'You\'ve almost become good!<br>The last step is to download the image and set it as your twitter avatar';
         canvas.width = profImg.width;
@@ -130,7 +137,13 @@ body {
     @<input type="text" placeholder="your twitter username" id="username"></input>
     <button>become good</button>
     <canvas></canvas>
-    <div class="bad"><small><input type="checkbox" id="badCheck">I would like to become bad instead (this is the incorrect option)</small></div>
+    <div class="bad">
+      <small><input type="radio" id="goodCheck" checked name="good">I want to become good!</small>
+      &nbsp;&nbsp;&nbsp;
+      <small><input type="radio" id="badCheck" name="good">I'd rather become bad (this is the incorrect option)</small>
+      &nbsp;&nbsp;&nbsp;
+      <small><input type="radio" id="okCheck" name="good">Can I just have a burg instead? 🍔</small>
+    </div>
     <br><br>
   </div>
 </body>
